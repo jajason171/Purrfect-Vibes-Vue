@@ -3,18 +3,18 @@
     <p>isloading</p>
   </section>
   <section
+    class="h-[100vh]"
     :class="formstatus === 'register' && 'h-[100vh]'"
     v-else
   >
     <div class="flex flex-col w-full bg-gray he-f">
-      <div class="max-w-[700px] mx-auto h-full">
-        <p class="text-black">{{ formstatus }}</p>
+      <div class="max-w-[700px] h-full">
         <div
           v-auto-animate
-          class="p-5 h30 bg-yellow-400"
-          :class="(formstatus === 'register' || 'complete') && 'h-[70%]'"
+          class="p-5 h30"
+          :class="formstatus === 'register' && 'h-[70%]'"
         >
-          <div class="text-left flex justify-between">
+          <div class="text-left flex justify-between z-[5]">
             <div class="">
               <p>Bracelet not registered</p>
               <p>Register to make it yours</p>
@@ -25,26 +25,17 @@
               src="../assets/dots.svg"
             />
           </div>
-          <div
-            v-auto-animate
-            class="flex flex-col justify-center align-middle pt-5 h-full"
-          >
+          <div class="absolute w-full h-[75vh] top-0 left-0 z-[-1]">
             <img
-              v-if="formstatus === 'register' || 'complete'"
               alt="placeloder"
-              src="../assets/pink-l.png"
-              class="max-h-[80%]"
-            />
-            <img
-              v-else
-              alt="placeloder"
-              src="../assets/blue.png"
+              src="../assets/1.png"
+              class="w-full h-full"
             />
           </div>
         </div>
         <div
           id="registerbtn"
-          class="bg-blue-200 text-left rounded-t-[30px] flex flex-col justify-center"
+          class="bg-blue-200 text-left rounded-t-[30px] flex flex-col justify-center z-5"
           :class="formstatus === 'register' && 'h30'"
         >
           <div class="p-5">

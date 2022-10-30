@@ -1,3 +1,23 @@
 {
-  "message": "ควย"
+  "message": "hello i18n !!",
+  "title": "สินค้ายังไม่ลงทะเบียน",
+  "Register to make it yours": "ลงทะเบียนเพื่อรับสิทธิประโยชน์",
+  "Purchase on": "วันที่สั่งซื้อ",
+  "warranty": "*การรับประกันจะเริ่มอัตโนมัติหลังจากวันที่สั่งซื้อ 7 วัน",
+  "Confirm": "ยืนยันข้อมูลลงทะเบียน",
+  "Register": "ลงทะเบียน",
+  "owner": "เจ้าของ",
+  "First Name": "ชื่อ",
+  "Last Name": "นามสกุล",
+  "Phone no": "เบอร์โทรศัพท์",
+  "Email": "อีเมล",
+  "Product Info": "ข้อมูลสินค้า",
+  "Serial Number": "รหัสสินค้า",
+  "Price": "ราคา",
+  "Warranty Info": "ข้อมูลการรับประกัน",
+  "Warranty Start": "ประกันเริ่ม",
+  "Duration": "ระยะเวลา",
+  "Year": "ปี",
+  "Register Bracelet": "ลงทะเบียนรับประกันสินค้า",
+  "Back": "กลับ"
 }

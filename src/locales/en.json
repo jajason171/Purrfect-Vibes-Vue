@@ -1,3 +1,23 @@
 {
-  "message": "hello i18n !!"
+  "message": "hello i18n !!",
+  "title": "Bracelet not registered",
+  "Register to make it yours": "Register to make it yours",
+  "Purchase on": "Purchase on",
+  "warranty": "*warranty automatically starts 7 days after your purchase",
+  "Confirm": "Confirm Register Information",
+  "Register": "Register",
+  "owner": "owner",
+  "First Name": "First Name",
+  "Last Name": "Last Name",
+  "Phone no": "Phone no",
+  "Email": "Email",
+  "Product Info": "Product Information",
+  "Serial Number": "Serial Number",
+  "Price": "Price",
+  "Warranty Info": "Warranty Info",
+  "Warranty Start": "Warranty Start",
+  "Duration": "Duration",
+  "Year": "Year",
+  "Register Bracelet": "Register Bracelet",
+  "Back": "Back"
 }

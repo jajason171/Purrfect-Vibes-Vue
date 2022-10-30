@@ -22,7 +22,6 @@ export default {
   setup() {
     const changelang = () => {
       i18n.locale = "en"
-      console.log(i18n.global.locale.value)
     }
     return {
       changelang

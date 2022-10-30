@@ -4,7 +4,10 @@
   </section>
   <section
     class="h-[100vh]"
-    :class="formstatus === 'register' && 'h-[100vh]'"
+    :class="
+      (formstatus === 'register' && 'h-[100vh]') ||
+      (formstatus === 'complete' && 'h-[100vh]')
+    "
     v-else
   >
     <div class="flex flex-col w-full bg-gray he-f">
@@ -12,15 +15,18 @@
         <div
           v-auto-animate
           class="p-5 h30"
-          :class="formstatus === 'register' && 'h-[70%]'"
+          :class="
+            (formstatus === 'register' && 'h-[70%]') ||
+            (formstatus === 'complete' && 'h-[70%]')
+          "
         >
           <div class="text-left flex justify-between z-[5]">
             <div class="">
-              <p>Bracelet not registered</p>
-              <p>Register to make it yours</p>
+              <h1>{{ $t("title") }}</h1>
+              <p>{{ $t("Register to make it yours") }}</p>
             </div>
             <img
-              @click.prevent="increst()"
+              @click.prevent="changelang()"
               alt="placeloder"
               src="../assets/dots.svg"
             />
@@ -34,30 +40,32 @@
           </div>
         </div>
         <div
+          v-auto-animate
           id="registerbtn"
           class="bg-blue-200 text-left rounded-t-[30px] flex flex-col justify-center z-5"
           :class="formstatus === 'register' && 'h30'"
         >
           <div class="p-5">
-            <p>Amy Bracelet</p>
-            <p>Purchase on: 01 Oct 2022</p>
+            <h1>Amy Bracelet</h1>
+            <h2>{{ $t("Purchase on") }}: 01 Oct 2022</h2>
             <p v-if="formstatus === 'register'">
-              *warranty automatically starts 7 days after your purchase
+              {{ $t("warranty") }}
             </p>
           </div>
           <div
+            v-auto-animate
             v-if="formstatus !== 'register'"
             class="flex justify-center"
           >
             <div class="bg-white p-5 w-full text-black rounded-t-[30px]">
-              <h1 v-if="formstatus === 'confirm'">Confirm Register Info</h1>
+              <h1 v-if="formstatus === 'confirm'">{{ $t("Confirm") }}</h1>
               <h1
                 class="pb-2"
                 v-else
               >
-                Register
+                {{ $t("Register") }}
               </h1>
-              <h2 v-if="formstatus !== 'complete'">owner</h2>
+              <h2 v-if="formstatus !== 'complete'">{{ $t("owner") }}</h2>
               <form
                 class="flex flex-col"
                 @submit.prevent="submitForm(FName, LName, Email, PhoneNum)"
@@ -66,11 +74,11 @@
                   class="flex flex-col"
                   v-if="formstatus !== 'complete'"
                 >
-                  <label for="fname">First Name:</label>
+                  <label for="fname">{{ $t("First Name") }}:</label>
                   <p v-if="formstatus === 'confirm'">{{ FName }}</p>
                   <input
                     maxlength="25"
-                    class="bg-gray-400 rounded-lg inputform my-2 py-1"
+                    class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
                       errormsg === 'put FName' && ' bg-red-400 border-red-500 '
                     "
@@ -79,12 +87,12 @@
                     v-if="formstatus === 'form'"
                     required
                   />
-                  <label for="fname">Last Name:</label>
+                  <label for="fname">{{ $t("Last Name") }}:</label>
                   <p v-if="formstatus === 'confirm'">{{ LName }}</p>
                   <input
                     maxlength="25"
                     type="text"
-                    class="bg-gray-400 rounded-lg inputform my-2 py-1"
+                    class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
                       errormsg === 'put LName' && ' bg-red-400 border-red-500 '
                     "
@@ -92,12 +100,12 @@
                     v-if="formstatus === 'form'"
                     required
                   />
-                  <label for="fname">Phone no:</label>
+                  <label for="fname">{{ $t("Phone no") }}:</label>
                   <p v-if="formstatus === 'confirm'">{{ PhoneNum }}</p>
                   <input
                     maxlength="10"
                     type="tel"
-                    class="bg-gray-400 rounded-lg inputform my-2 py-1"
+                    class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
                       errormsg === 'put LName' && ' bg-red-400 border-red-500 '
                     "
@@ -105,12 +113,12 @@
                     v-if="formstatus === 'form'"
                     required
                   />
-                  <label for="fname">Email:</label>
+                  <label for="fname">{{ $t("Email") }}:</label>
                   <p v-if="formstatus === 'confirm'">{{ Email }}</p>
                   <input
                     maxlength="50"
                     type="email"
-                    class="bg-gray-400 rounded-lg inputform my-2 py-1"
+                    class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
                       errormsg === 'put LName' && ' bg-red-400 border-red-500 '
                     "
@@ -124,28 +132,28 @@
                   class="flex flex-col"
                 >
                   <div class="flex flex-col">
-                    <h1>Product Info</h1>
+                    <h1>{{ $t("Product Info") }}</h1>
                     <div class="flex w-full justify-between">
                       <div class="w50">
-                        <p>Serial Number</p>
+                        <p>{{ $t("Serial Number") }}</p>
                         <p>{{ $route.params.serialnumber }}</p>
                       </div>
                       <div class="w50">
-                        <p>Price</p>
+                        <p>{{ $t("Price") }}</p>
                         <p>฿1490.00</p>
                       </div>
                     </div>
                   </div>
                   <div class="flex flex-col">
-                    <h1>Warranty Info</h1>
+                    <h1>{{ $t("Warranty Info") }}</h1>
                     <div class="flex info">
                       <div class="w50">
-                        <p>Warranty Start</p>
+                        <p>{{ $t("Warranty Start") }}</p>
                         <p>08-Oct-2022</p>
                       </div>
                       <div class="w50">
-                        <p>Duration</p>
-                        <p>1 Year</p>
+                        <p>{{ $t("Duration") }}</p>
+                        <p>1 {{ $t("Year") }}</p>
                       </div>
                     </div>
                   </div>
@@ -164,7 +172,7 @@
                     @click.prevent="setFormStatus('form')"
                     class="rounded bg-red-700 p-3 max-w-[200px] mt-5"
                   >
-                    Back
+                    {{ $t("Back") }}
                   </button>
                   <input
                     required
@@ -177,9 +185,9 @@
                   <button
                     v-if="formstatus === 'form'"
                     @click.prevent="CheckInputError()"
-                    class="rounded bg-green-700 p-3 max-w-[200px] mt-5"
+                    class="rounded-xl bg-gray-400 px-3 py-1 max-w-[200px] mt-5 text-white borderregister"
                   >
-                    Register
+                    {{ $t("Register") }}
                   </button>
                 </div>
               </form>
@@ -193,7 +201,7 @@
               @click.prevent="setFormStatus('form'), scrollToEnd()"
               class="rounded bg-red-700 p-3 max-w-[200px] mt-5"
             >
-              Register Bracelet
+              {{ $t("Register Bracelet") }}
             </button>
           </div>
         </div>
@@ -205,6 +213,7 @@
 <script>
 import { ref } from "@vue/reactivity"
 import { useRouter } from "vue-router"
+import i18n from "../i18n"
 // import { computed } from "vue"
 import axios from "axios"
 // eslint-disable-next-line
@@ -223,6 +232,16 @@ export default {
     let errormsg = ref("")
     const increst = () => {
       console.log(router.currentRoute.value.params.serialnumber)
+    }
+    let lang = ref("en")
+    const changelang = () => {
+      if (lang === "en") {
+        lang = "th"
+      } else {
+        lang = "en"
+      }
+      i18n.locale = lang
+      console.log(router.currentRoute.value.params.lang)
     }
     const setFormStatus = (value) => {
       formstatus.value = value
@@ -323,13 +342,18 @@ export default {
       FName,
       LName,
       Email,
-      PhoneNum
+      PhoneNum,
+      changelang
     }
   }
 }
 </script>
 
 <style scope>
+h1 {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
 .info {
   width: 100%;
 }
@@ -347,5 +371,9 @@ export default {
 }
 .he-f {
   height: 100%;
+}
+.borderregister {
+  border: 3px solid #ffffff;
+  border-radius: 15px;
 }
 </style>

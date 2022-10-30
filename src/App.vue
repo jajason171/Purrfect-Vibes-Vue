@@ -7,8 +7,13 @@
 </template>
 
 <style lang="scss">
+@font-face {
+  font-family: LineFont;
+  src: url(@/assets/font/LINESeedSansTH_W_Rg.woff2);
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: LineFont;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

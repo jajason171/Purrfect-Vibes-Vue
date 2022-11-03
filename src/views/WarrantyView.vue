@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isLoading">
+  <section v-if="isLoading === true">
     <p>isloading</p>
   </section>
   <section
@@ -21,7 +21,17 @@
           "
         >
           <div class="text-left flex justify-between z-[5]">
-            <div class="">
+            <div
+              class=""
+              v-if="formstatus === 'complete'"
+            >
+              <h1>{{ $t("Warranty Left") }}</h1>
+              <p>542{{ $t("Days") }}</p>
+            </div>
+            <div
+              class=""
+              v-else
+            >
               <h1>{{ $t("title") }}</h1>
               <p>{{ $t("Register to make it yours") }}</p>
             </div>
@@ -42,10 +52,13 @@
         <div
           v-auto-animate
           id="registerbtn"
-          class="bg-blue-200 text-left rounded-t-[30px] flex flex-col justify-center z-5"
-          :class="formstatus === 'register' && 'h30'"
+          class="bg-black text-left rounded-t-[30px] flex flex-col justify-center z-5"
+          :class="
+            (formstatus === 'register' && 'h30') ||
+            (formstatus === 'complete' && 'h30')
+          "
         >
-          <div class="p-5">
+          <div class="p-5 text-white">
             <h1>Amy Bracelet</h1>
             <h2>{{ $t("Purchase on") }}: 01 Oct 2022</h2>
             <p v-if="formstatus === 'register'">
@@ -62,10 +75,11 @@
               <h1
                 class="pb-2"
                 v-else
+                :class="formstatus === 'complete' && 'hidden'"
               >
                 {{ $t("Register") }}
               </h1>
-              <h2 v-if="formstatus !== 'complete'">{{ $t("owner") }}</h2>
+              <h1 v-if="formstatus !== 'complete'">{{ $t("owner") }}</h1>
               <form
                 class="flex flex-col"
                 @submit.prevent="submitForm(FName, LName, Email, PhoneNum)"
@@ -75,7 +89,12 @@
                   v-if="formstatus !== 'complete'"
                 >
                   <label for="fname">{{ $t("First Name") }}:</label>
-                  <p v-if="formstatus === 'confirm'">{{ FName }}</p>
+                  <p
+                    class="confirmtext"
+                    v-if="formstatus === 'confirm'"
+                  >
+                    {{ FName }}
+                  </p>
                   <input
                     maxlength="25"
                     class="bg-gray-200 rounded-lg inputform my-2 py-1"
@@ -88,7 +107,12 @@
                     required
                   />
                   <label for="fname">{{ $t("Last Name") }}:</label>
-                  <p v-if="formstatus === 'confirm'">{{ LName }}</p>
+                  <p
+                    class="confirmtext"
+                    v-if="formstatus === 'confirm'"
+                  >
+                    {{ LName }}
+                  </p>
                   <input
                     maxlength="25"
                     type="text"
@@ -101,7 +125,12 @@
                     required
                   />
                   <label for="fname">{{ $t("Phone no") }}:</label>
-                  <p v-if="formstatus === 'confirm'">{{ PhoneNum }}</p>
+                  <p
+                    class="confirmtext"
+                    v-if="formstatus === 'confirm'"
+                  >
+                    {{ PhoneNum }}
+                  </p>
                   <input
                     maxlength="10"
                     type="tel"
@@ -114,7 +143,12 @@
                     required
                   />
                   <label for="fname">{{ $t("Email") }}:</label>
-                  <p v-if="formstatus === 'confirm'">{{ Email }}</p>
+                  <p
+                    class="confirmtext"
+                    v-if="formstatus === 'confirm'"
+                  >
+                    {{ Email }}
+                  </p>
                   <input
                     maxlength="50"
                     type="email"
@@ -129,18 +163,20 @@
                 </div>
                 <div
                   v-auto-animate
-                  class="flex flex-col"
+                  class="flex flex-col mt-5"
                 >
                   <div class="flex flex-col">
                     <h1>{{ $t("Product Info") }}</h1>
-                    <div class="flex w-full justify-between">
+                    <div class="flex w-full justify-between mb-2">
                       <div class="w50">
                         <p>{{ $t("Serial Number") }}</p>
-                        <p>{{ $route.params.serialnumber }}</p>
+                        <p class="productinfo">
+                          {{ $route.params.serialnumber }}
+                        </p>
                       </div>
                       <div class="w50">
                         <p>{{ $t("Price") }}</p>
-                        <p>฿1490.00</p>
+                        <p class="productinfo">฿1490.00</p>
                       </div>
                     </div>
                   </div>
@@ -149,11 +185,11 @@
                     <div class="flex info">
                       <div class="w50">
                         <p>{{ $t("Warranty Start") }}</p>
-                        <p>08-Oct-2022</p>
+                        <p class="productinfo">08-Oct-2022</p>
                       </div>
                       <div class="w50">
                         <p>{{ $t("Duration") }}</p>
-                        <p>1 {{ $t("Year") }}</p>
+                        <p class="productinfo">1 {{ $t("Year") }}</p>
                       </div>
                     </div>
                   </div>
@@ -170,7 +206,7 @@
                   <button
                     v-if="formstatus === 'confirm'"
                     @click.prevent="setFormStatus('form')"
-                    class="rounded bg-red-700 p-3 max-w-[200px] mt-5"
+                    class="rounded-xl bg-gray-400 px-3 py-1 max-w-[200px] min-w-[120px] mt-5 text-white borderregister"
                   >
                     {{ $t("Back") }}
                   </button>
@@ -179,7 +215,7 @@
                     v-if="formstatus === 'confirm'"
                     type="submit"
                     value="confirm"
-                    class="rounded bg-red-700 p-3 max-w-[200px] mt-5"
+                    class="rounded-xl bg-gray-400 px-3 py-1 max-w-[200px] min-w-[120px] mt-5 text-white borderregister"
                   />
 
                   <button
@@ -199,7 +235,7 @@
           >
             <button
               @click.prevent="setFormStatus('form'), scrollToEnd()"
-              class="rounded bg-red-700 p-3 max-w-[200px] mt-5"
+              class="rounded bg-gray-400 p-3 max-w-[200px] mt-5"
             >
               {{ $t("Register Bracelet") }}
             </button>
@@ -235,13 +271,13 @@ export default {
     }
     let lang = ref("en")
     const changelang = () => {
-      if (lang === "en") {
-        lang = "th"
-      } else {
-        lang = "en"
-      }
-      i18n.locale = lang
-      console.log(router.currentRoute.value.params.lang)
+      // if (lang === "en") {
+      //   lang = "th"
+      // } else {
+      //   lang = "en"
+      // }
+      i18n.locale = lang.value
+      console.log(i18n.locale)
     }
     const setFormStatus = (value) => {
       formstatus.value = value
@@ -261,7 +297,7 @@ export default {
     }
     const submitForm = (firstName, lastName, email, phoneNo) => {
       axios
-        .post("https://social-paws-travel-49-228-16-65.loca.lt/warranty", {
+        .post("http://localhost:4000/warranty", {
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -272,7 +308,7 @@ export default {
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
-            setFormStatus("complete")
+            // setFormStatus("complete")
           }
         })
         .catch((error) => {
@@ -312,7 +348,7 @@ export default {
     const getItemInfo = () => {
       axios
         .get(
-          `https://social-paws-travel-49-228-16-65.loca.lt/warranty/${router.currentRoute.value.params.serialnumber}`
+          `http://localhost:4000/${router.currentRoute.value.params.serialnumber}`
         )
         .then((response) => {
           isLoading.value = false
@@ -353,6 +389,23 @@ export default {
 h1 {
   font-size: 18px !important;
   font-weight: 700 !important;
+}
+h2 {
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  color: #d9d9d9;
+}
+label {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+}
+.productinfo {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+.confirmtext {
+  font-size: 16px !important;
+  font-weight: 600 !important;
 }
 .info {
   width: 100%;

@@ -3,6 +3,7 @@
     <img
       alt="Vue logo"
       src="../assets/logo.png"
+      @click="checlang()"
     />
     <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
@@ -22,9 +23,15 @@ export default {
   setup() {
     const changelang = () => {
       i18n.locale = "en"
+      console.log(i18n.locale)
     }
+    const checlang = () => {
+      console.log(i18n.locale)
+    }
+
     return {
-      changelang
+      changelang,
+      checlang
     }
   }
 }

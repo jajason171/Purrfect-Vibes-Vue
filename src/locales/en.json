@@ -21,5 +21,9 @@
   "Duration": "Duration",
   "Year": "Year",
   "Register Bracelet": "Register Bracelet",
-  "Back": "Back"
+  "Back": "Back",
+  "FirstNameer" : "Please insert FirstName.",
+  "LastNameer" : "Please insert LastName.",
+  "PhoneNumberer" : "PhoneNumber is in a wrong format.",
+  "Emailer" : "Email is in a wrong format."
 }

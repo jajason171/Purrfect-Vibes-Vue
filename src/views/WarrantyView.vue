@@ -8,16 +8,16 @@
       (formstatus === 'register' && 'h-[100vh]') ||
       (formstatus === 'complete' && 'h-[100vh]')
     "
-    v-else
+    v-if="isLoading === false"
   >
-    <div class="flex flex-col w-full bg-gray he-f">
-      <div class="max-w-[700px] h-full">
+    <div class="flex flex-col w-full bg-gray he-f justify-center">
+      <div class="max-w-[700px] h-full content">
         <div
           v-auto-animate
           class="p-5 h30"
           :class="
             (formstatus === 'register' && 'h-[70%]') ||
-            (formstatus === 'complete' && 'h-[70%]')
+            (formstatus === 'complete' && 'h-[60%]')
           "
         >
           <div class="text-left flex justify-between z-[5]">
@@ -26,7 +26,7 @@
               v-if="formstatus === 'complete'"
             >
               <h1>{{ $t("Warranty Left") }}</h1>
-              <p>542{{ $t("Days") }}</p>
+              <p>{{ duration }} {{ $t("Days") }}</p>
             </div>
             <div
               class=""
@@ -35,11 +35,26 @@
               <h1>{{ $t("title") }}</h1>
               <p>{{ $t("Register to make it yours") }}</p>
             </div>
-            <img
+            <!-- <img
               @click.prevent="changelang()"
               alt="placeloder"
               src="../assets/dots.svg"
-            />
+              class="dots"
+            /> -->
+            <h1
+              @click.prevent="changelang()"
+              v-if="lang === 'en'"
+              class="dots"
+            >
+              TH
+            </h1>
+            <h1
+              @click.prevent="changelang()"
+              v-else
+              class="dots"
+            >
+              EN
+            </h1>
           </div>
           <div class="absolute w-full h-[75vh] top-0 left-0 z-[-1]">
             <img
@@ -53,14 +68,11 @@
           v-auto-animate
           id="registerbtn"
           class="bg-black text-left rounded-t-[30px] flex flex-col justify-center z-5"
-          :class="
-            (formstatus === 'register' && 'h30') ||
-            (formstatus === 'complete' && 'h30')
-          "
+          :class="formstatus === 'register' && 'h30'"
         >
-          <div class="p-5 text-white">
+          <div class="p-6 text-white">
             <h1>Amy Bracelet</h1>
-            <h2>{{ $t("Purchase on") }}: 01 Oct 2022</h2>
+            <h2>{{ $t("Purchase on") }}: {{ startDate }}</h2>
             <p v-if="formstatus === 'register'">
               {{ $t("warranty") }}
             </p>
@@ -70,7 +82,7 @@
             v-if="formstatus !== 'register'"
             class="flex justify-center"
           >
-            <div class="bg-white p-5 w-full text-black rounded-t-[30px]">
+            <div class="bg-white p-7 w-full text-black rounded-t-[30px]">
               <h1 v-if="formstatus === 'confirm'">{{ $t("Confirm") }}</h1>
               <h1
                 class="pb-2"
@@ -99,7 +111,8 @@
                     maxlength="25"
                     class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
-                      errormsg === 'put FName' && ' bg-red-400 border-red-500 '
+                      errormsg === 'Please insert FirstName.' &&
+                      ' bg-red-400 border-red-500 '
                     "
                     type="text"
                     v-model="FName"
@@ -118,7 +131,8 @@
                     type="text"
                     class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
-                      errormsg === 'put LName' && ' bg-red-400 border-red-500 '
+                      errormsg === 'Please insert LastName.' &&
+                      ' bg-red-400 border-red-500 '
                     "
                     v-model="LName"
                     v-if="formstatus === 'form'"
@@ -136,7 +150,8 @@
                     type="tel"
                     class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
-                      errormsg === 'put LName' && ' bg-red-400 border-red-500 '
+                      errormsg === 'PhoneNumber is in a wrong format.' &&
+                      ' bg-red-400 border-red-500 '
                     "
                     v-model="PhoneNum"
                     v-if="formstatus === 'form'"
@@ -154,7 +169,8 @@
                     type="email"
                     class="bg-gray-200 rounded-lg inputform my-2 py-1"
                     :class="
-                      errormsg === 'put LName' && ' bg-red-400 border-red-500 '
+                      errormsg === 'Email is in a wrong format.' &&
+                      ' bg-red-400 border-red-500 '
                     "
                     v-model="Email"
                     v-if="formstatus === 'form'"
@@ -176,7 +192,7 @@
                       </div>
                       <div class="w50">
                         <p>{{ $t("Price") }}</p>
-                        <p class="productinfo">฿1490.00</p>
+                        <p class="productinfo">฿1690.00</p>
                       </div>
                     </div>
                   </div>
@@ -185,7 +201,7 @@
                     <div class="flex info">
                       <div class="w50">
                         <p>{{ $t("Warranty Start") }}</p>
-                        <p class="productinfo">08-Oct-2022</p>
+                        <p class="productinfo">{{ warrantyDate }}</p>
                       </div>
                       <div class="w50">
                         <p>{{ $t("Duration") }}</p>
@@ -195,10 +211,28 @@
                   </div>
                   <div class="flex justify-center">
                     <p
-                      v-if="errormsg != ''"
+                      v-if="errormsg === 'Please insert FirstName.'"
                       class="text-red-500"
                     >
-                      {{ errormsg }}
+                      {{ $t("FirstNameer") }}
+                    </p>
+                    <p
+                      v-if="errormsg === 'Please insert LastName.'"
+                      class="text-red-500"
+                    >
+                      {{ $t("LastNameer") }}
+                    </p>
+                    <p
+                      v-if="errormsg === 'PhoneNumber is in a wrong format.'"
+                      class="text-red-500"
+                    >
+                      {{ $t("PhoneNumberer") }}
+                    </p>
+                    <p
+                      v-if="errormsg === 'Email is in a wrong format.'"
+                      class="text-red-500"
+                    >
+                      {{ $t("Emailer") }}
                     </p>
                   </div>
                 </div>
@@ -244,20 +278,23 @@
       </div>
     </div>
   </section>
+  <section v-if="is404 === true">
+    <p>isloading</p>
+  </section>
 </template>
 
 <script>
 import { ref } from "@vue/reactivity"
 import { useRouter } from "vue-router"
 import i18n from "../i18n"
+import moment from "moment"
 // import { computed } from "vue"
 import axios from "axios"
-// eslint-disable-next-line
-import { onMounted } from "@vue/runtime-core"
 export default {
   setup() {
     const router = useRouter()
     let isLoading = ref(true)
+    let is404 = ref(false)
     let FName = ref("jason")
     let LName = ref("jan")
     let Email = ref("jasonefw@gmail.com")
@@ -266,21 +303,24 @@ export default {
     let secnum = ref(0)
     let formstatus = ref("register")
     let errormsg = ref("")
+    let startDate = ref("")
+    let warrantyDate = ref("")
+    let duration = ref("")
     const increst = () => {
       console.log(router.currentRoute.value.params.serialnumber)
     }
-    let lang = ref("en")
+    let lang = ref("th")
     const changelang = () => {
-      // if (lang === "en") {
-      //   lang = "th"
-      // } else {
-      //   lang = "en"
-      // }
-      i18n.locale = lang.value
-      console.log(i18n.locale)
+      if (lang.value === "en") {
+        lang.value = "th"
+      } else {
+        lang.value = "en"
+      }
+      i18n.global.locale.value = lang.value
+      console.log(i18n.global.locale.value)
     }
-    const setFormStatus = (value) => {
-      formstatus.value = value
+    const setFormStatus = (_value) => {
+      formstatus.value = _value
       console.log(formstatus.value)
     }
 
@@ -297,7 +337,7 @@ export default {
     }
     const submitForm = (firstName, lastName, email, phoneNo) => {
       axios
-        .post("http://localhost:4000/warranty", {
+        .post("http://localhost:4000/warranty/register", {
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -308,7 +348,7 @@ export default {
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
-            // setFormStatus("complete")
+            setFormStatus("complete")
           }
         })
         .catch((error) => {
@@ -324,47 +364,55 @@ export default {
         PhoneNum.value === ""
       ) {
         if (FName.value === "") {
-          errormsg.value = "put FName"
+          errormsg.value = "Please insert FirstName."
         } else if (LName.value === "") {
-          errormsg.value = "put LName"
+          errormsg.value = "Please insert LastName."
         } else if (Email.value === "") {
-          errormsg.value = "put Email"
+          errormsg.value = "PhoneNumber is in a wrong format."
         } else if (PhoneNum.value === "") {
-          errormsg.value = "put PhoneNum"
+          errormsg.value = "Email is in a wrong format."
         }
       } else if (
         PhoneNum.value.length != 10 ||
         PhoneNum.value.includes("@", 0) === "0"
       ) {
-        errormsg.value = "PhoneNum is in a wrong format"
+        errormsg.value = "PhoneNumber is in a wrong format."
       } else if (!Email.value.includes("@") || !Email.value.includes(".")) {
-        errormsg.value = "Email is in a wrong format"
+        errormsg.value = "Email is in a wrong format."
       } else {
         setFormStatus("confirm")
         errormsg.value = ""
       }
     }
+
     // eslint-disable-next-line
     const getItemInfo = () => {
       axios
         .get(
-          `http://localhost:4000/${router.currentRoute.value.params.serialnumber}`
+          `http://localhost:4000/warranty/${router.currentRoute.value.params.serialnumber}`
         )
         .then((response) => {
-          isLoading.value = false
-          console.log(response)
-          if (response === []) {
+          if (response.data.length === 0) {
             setFormStatus("register")
           } else {
             setFormStatus("complete")
+            startDate.value = moment(response.data.startDate).format(
+              "DD MMMM YYYY"
+            )
+            warrantyDate.value = moment(startDate.value)
+              .add(7, "days")
+              .format("DD MMMM YYYY")
+            duration.value = response.data.duration
           }
         })
         .catch((error) => {
-          isLoading.value = false
+          is404.value = false
           this.response = "Error: " + error.response
         })
+      isLoading.value = false
     }
-    // onMounted(getItemInfo())
+
+    getItemInfo()
     return {
       scrollToEnd,
       firsttext,
@@ -379,7 +427,13 @@ export default {
       LName,
       Email,
       PhoneNum,
-      changelang
+      changelang,
+      getItemInfo,
+      isLoading,
+      lang,
+      warrantyDate,
+      startDate,
+      duration
     }
   }
 }
@@ -400,7 +454,7 @@ label {
   font-weight: 400 !important;
 }
 .productinfo {
-  font-size: 16px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
 }
 .confirmtext {
@@ -428,5 +482,8 @@ label {
 .borderregister {
   border: 3px solid #ffffff;
   border-radius: 15px;
+}
+.dots {
+  cursor: pointer;
 }
 </style>

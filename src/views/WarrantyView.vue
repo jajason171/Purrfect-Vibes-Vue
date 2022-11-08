@@ -71,13 +71,19 @@
           class="bg-black text-left rounded-t-[30px] flex flex-col justify-center z-5"
           :class="formstatus === 'register' && 'h25'"
         >
-          <div class="p-6 text-white">
-            <h1>Amy Bracelet</h1>
-            <h2>{{ $t("Purchase on") }}: {{ startDate }}</h2>
-            <p v-if="formstatus === 'register'">
+          <div class="px-6 text-white">
+            <h1 class="my-2">Amy Bracelet</h1>
+            <h2 class="mb-3">{{ $t("Purchase on") }}: {{ startDate }}</h2>
+            <p
+              class="wanp"
+              v-if="formstatus === 'register'"
+            >
               {{ $t("warranty1") }}
             </p>
-            <p v-if="formstatus === 'register'">
+            <p
+              class="wanp"
+              v-if="formstatus === 'register'"
+            >
               {{ $t("warranty2") }}
             </p>
           </div>
@@ -87,15 +93,25 @@
             class="flex justify-center"
           >
             <div class="bg-white p-7 w-full text-black rounded-t-[30px]">
-              <h1 v-if="formstatus === 'confirm'">{{ $t("Confirm") }}</h1>
               <h1
-                class="pb-2"
+                class="mb-3"
+                v-if="formstatus === 'confirm'"
+              >
+                {{ $t("Confirm") }}
+              </h1>
+              <h1
+                class="mb-3"
                 v-else
                 :class="formstatus === 'complete' && 'hidden'"
               >
                 {{ $t("Register") }}
               </h1>
-              <h1 v-if="formstatus !== 'complete'">{{ $t("owner") }}</h1>
+              <h1
+                class="mb-2"
+                v-if="formstatus !== 'complete'"
+              >
+                {{ $t("owner") }}
+              </h1>
               <form
                 class="flex flex-col"
                 @submit.prevent="submitForm(FName, LName, Email, PhoneNum)"
@@ -185,8 +201,8 @@
                   v-auto-animate
                   class="flex flex-col mt-5"
                 >
-                  <div class="flex flex-col">
-                    <h1>{{ $t("Product Info") }}</h1>
+                  <div class="flex flex-col mb-3">
+                    <h1 class="mb-2">{{ $t("Product Info") }}</h1>
                     <div class="flex w-full justify-between mb-2">
                       <div class="w50">
                         <p>{{ $t("Serial Number") }}</p>
@@ -201,7 +217,7 @@
                     </div>
                   </div>
                   <div class="flex flex-col">
-                    <h1>{{ $t("Warranty Info") }}</h1>
+                    <h1 class="mb-2">{{ $t("Warranty Info") }}</h1>
                     <div class="flex info">
                       <div class="w50">
                         <p>{{ $t("Warranty Start") }}</p>
@@ -273,7 +289,7 @@
           >
             <button
               @click.prevent="setFormStatus('form'), scrollToEnd()"
-              class="rounded bg-gray-400 p-3 max-w-[200px] mt-5"
+              class="rounded-[15px] bg-gray-400 p-1 px-4 max-w-[250px] mt-5 regisbtn text-white"
             >
               {{ $t("Register Bracelet") }}
             </button>
@@ -405,19 +421,19 @@ export default {
           if (response.data.duration < 0) {
             setFormStatus("register")
             startDate.value = moment(response.data.startDate).format(
-              "DD MMMM YYYY"
+              "DD MMM YYYY"
             )
             warrantyDate.value = moment(startDate.value)
               .add(7, "days")
-              .format("DD MMMM YYYY")
+              .format("DD-MMM-YYYY")
           } else {
             setFormStatus("complete")
             startDate.value = moment(response.data.startDate).format(
-              "DD MMMM YYYY"
+              "DD MMM YYYY"
             )
             warrantyDate.value = moment(startDate.value)
               .add(7, "days")
-              .format("DD MMMM YYYY")
+              .format("DD-MMM-YYYY")
             duration.value = response.data.duration
           }
         })
@@ -490,9 +506,14 @@ label {
 }
 .inputform {
   background: #cfcfcf;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .h70 {
   height: 60% !important;
+}
+.h30 {
+  height: 30%;
 }
 .h25 {
   height: 27%;
@@ -504,7 +525,18 @@ label {
   border: 3px solid #ffffff;
   border-radius: 15px;
 }
+.regisbtn {
+  border: 3px solid #ffffff;
+  border-radius: 15px;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+
 .dots {
   cursor: pointer;
+}
+.wanp {
+  font-size: 14px !important;
+  font-weight: 400 !important;
 }
 </style>

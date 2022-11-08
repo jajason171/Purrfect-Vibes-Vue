@@ -1,6 +1,7 @@
 <template>
-  <section v-if="isLoading === true">
-    <p>isloading</p>
+  <section v-if="isLoading === true && is404 === true">
+    <p v-if="isLoading === true">isloading</p>
+    <p v-if="is404 === true">isError</p>
   </section>
   <section
     class="h-[100vh]"
@@ -8,7 +9,7 @@
       (formstatus === 'register' && 'h-[100vh]') ||
       (formstatus === 'complete' && 'h-[100vh]')
     "
-    v-if="isLoading === false"
+    v-else
   >
     <div class="flex flex-col w-full bg-gray he-f justify-center">
       <div class="max-w-[700px] h-full content">
@@ -16,11 +17,11 @@
           v-auto-animate
           class="p-5 h30"
           :class="
-            (formstatus === 'register' && 'h-[70%]') ||
+            (formstatus === 'register' && 'h-[73%]') ||
             (formstatus === 'complete' && 'h-[60%]')
           "
         >
-          <div class="text-left flex justify-between z-[5]">
+          <div class="text-left flex justify-between z-[5] mt-[15%]">
             <div
               class=""
               v-if="formstatus === 'complete'"
@@ -41,22 +42,22 @@
               src="../assets/dots.svg"
               class="dots"
             /> -->
-            <h1
+            <h3
               @click.prevent="changelang()"
               v-if="lang === 'en'"
               class="dots"
             >
               TH
-            </h1>
-            <h1
+            </h3>
+            <h3
               @click.prevent="changelang()"
               v-else
-              class="dots"
+              class="dots mt-[1px]"
             >
               EN
-            </h1>
+            </h3>
           </div>
-          <div class="absolute w-full h-[75vh] top-0 left-0 z-[-1]">
+          <div class="absolute w-full h-[80vh] top-0 left-0 z-[-1]">
             <img
               alt="placeloder"
               src="../assets/1.png"
@@ -68,13 +69,16 @@
           v-auto-animate
           id="registerbtn"
           class="bg-black text-left rounded-t-[30px] flex flex-col justify-center z-5"
-          :class="formstatus === 'register' && 'h30'"
+          :class="formstatus === 'register' && 'h25'"
         >
           <div class="p-6 text-white">
             <h1>Amy Bracelet</h1>
             <h2>{{ $t("Purchase on") }}: {{ startDate }}</h2>
             <p v-if="formstatus === 'register'">
-              {{ $t("warranty") }}
+              {{ $t("warranty1") }}
+            </p>
+            <p v-if="formstatus === 'register'">
+              {{ $t("warranty2") }}
             </p>
           </div>
           <div
@@ -192,7 +196,7 @@
                       </div>
                       <div class="w50">
                         <p>{{ $t("Price") }}</p>
-                        <p class="productinfo">฿1690.00</p>
+                        <p class="productinfo">฿ 1,790.00</p>
                       </div>
                     </div>
                   </div>
@@ -278,9 +282,6 @@
       </div>
     </div>
   </section>
-  <section v-if="is404 === true">
-    <p>isloading</p>
-  </section>
 </template>
 
 <script>
@@ -306,6 +307,7 @@ export default {
     let startDate = ref("")
     let warrantyDate = ref("")
     let duration = ref("")
+    let error404 = ref(false)
     const increst = () => {
       console.log(router.currentRoute.value.params.serialnumber)
     }
@@ -348,7 +350,7 @@ export default {
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
-            setFormStatus("complete")
+            setInterval(getItemInfo(), 1500)
           }
         })
         .catch((error) => {
@@ -392,8 +394,22 @@ export default {
           `http://localhost:4000/warranty/${router.currentRoute.value.params.serialnumber}`
         )
         .then((response) => {
-          if (response.data.length === 0) {
+          console.log(response)
+          console.log(response.data)
+          console.log(response.data === "Invalid serial number")
+
+          if (response.data === "Invalid serial number") {
+            is404.value = true
+            console.log(is404.value)
+          }
+          if (response.data.duration < 0) {
             setFormStatus("register")
+            startDate.value = moment(response.data.startDate).format(
+              "DD MMMM YYYY"
+            )
+            warrantyDate.value = moment(startDate.value)
+              .add(7, "days")
+              .format("DD MMMM YYYY")
           } else {
             setFormStatus("complete")
             startDate.value = moment(response.data.startDate).format(
@@ -433,7 +449,8 @@ export default {
       lang,
       warrantyDate,
       startDate,
-      duration
+      duration,
+      error404
     }
   }
 }
@@ -448,6 +465,10 @@ h2 {
   font-size: 18px !important;
   font-weight: 400 !important;
   color: #d9d9d9;
+}
+h3 {
+  font-size: 16px !important;
+  font-weight: 400 !important;
 }
 label {
   font-size: 15px !important;
@@ -473,8 +494,8 @@ label {
 .h70 {
   height: 60% !important;
 }
-.h30 {
-  height: 30%;
+.h25 {
+  height: 27%;
 }
 .he-f {
   height: 100%;

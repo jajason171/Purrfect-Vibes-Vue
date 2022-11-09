@@ -12,12 +12,12 @@
   "owner": "Owner",
   "First Name": "First Name",
   "Last Name": "Last Name",
-  "Phone no": "Phone no",
+  "Phone no": "Phone No",
   "Email": "Email",
   "Product Info": "Product Information",
   "Serial Number": "Serial Number",
   "Price": "Price",
-  "Warranty Info": "Warranty Info",
+  "Warranty Info": "Warranty Information",
   "Warranty Start": "Warranty Start",
   "Duration": "Duration",
   "Year": "Year",
@@ -26,5 +26,8 @@
   "FirstNameer" : "Please insert FirstName.",
   "LastNameer" : "Please insert LastName.",
   "PhoneNumberer" : "PhoneNumber is in a wrong format.",
-  "Emailer" : "Email is in a wrong format."
+  "Emailer" : "Email is in a wrong format.",
+  "Contact" : "In case you face any problems, or want your jewelry fixed, clean, or plated. You can contact our customer support via LINE OA",
+  "Successful" : "Registration Successful"
+  
 }

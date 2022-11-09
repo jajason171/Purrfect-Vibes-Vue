@@ -11,8 +11,41 @@
     "
     v-else
   >
-    <div class="flex flex-col w-full bg-gray he-f justify-center">
-      <div class="max-w-[700px] h-full content">
+    <div
+      v-if="modal === true"
+      class="rounded-[30px] max-w-[500px] w-[80%] top-[25%] left-[10%] h-[429px] absolute z-10 bg-white p-6 modaldiv"
+    >
+      <div class="w-[80%] h-[50%] mx-5">
+        <img src="../assets/success.gif" />
+      </div>
+      <h1 class="text-black my-2">{{ $t("Successful") }}</h1>
+      <p class="mb-2">
+        {{ $t("Contact") }}
+      </p>
+      <div class="flex justify-around">
+        <button
+          @click.prevent="setModal(false), setFormStatus('complete')"
+          class="px-3 py-2 w-[40%] mt-5 borderback"
+        >
+          {{ $t("Back") }}
+        </button>
+        <button
+          class="rounded-xl bg-[#2CDA94] px-3 py-2w-[40%] mt-5 text-white borderregister"
+        >
+          <a
+            href="https://liff.line.me/1645278921-kWRPP32q/?accountId=purrfect.vibes"
+            target="_blank"
+          >
+            Line OA
+          </a>
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex flex-col w-full bg-gray he-f justify-center"
+      :class="modal === true && 'blur'"
+    >
+      <div class="w-full max-w-[600px] h-full content m-auto">
         <div
           v-auto-animate
           class="p-5 h30"
@@ -36,12 +69,7 @@
               <h1>{{ $t("title") }}</h1>
               <p>{{ $t("Register to make it yours") }}</p>
             </div>
-            <!-- <img
-              @click.prevent="changelang()"
-              alt="placeloder"
-              src="../assets/dots.svg"
-              class="dots"
-            /> -->
+
             <h3
               @click.prevent="changelang()"
               v-if="lang === 'en'"
@@ -68,12 +96,12 @@
         <div
           v-auto-animate
           id="registerbtn"
-          class="bg-black text-left rounded-t-[30px] flex flex-col justify-center z-5"
+          class="bg-[#1b1b1b] text-left rounded-t-[30px] flex flex-col justify-center z-5"
           :class="formstatus === 'register' && 'h25'"
         >
           <div class="px-6 text-white">
             <h1 class="my-2">Amy Bracelet</h1>
-            <h2 class="mb-3">{{ $t("Purchase on") }}: {{ startDate }}</h2>
+            <h2 class="mb-2">{{ $t("Purchase on") }}: {{ startDate }}</h2>
             <p
               class="wanp"
               v-if="formstatus === 'register'"
@@ -260,7 +288,7 @@
                   <button
                     v-if="formstatus === 'confirm'"
                     @click.prevent="setFormStatus('form')"
-                    class="rounded-xl bg-gray-400 px-3 py-1 max-w-[200px] min-w-[120px] mt-5 text-white borderregister"
+                    class="px-3 py-[7px] max-w-[200px] min-w-[120px] mt-5 borderback"
                   >
                     {{ $t("Back") }}
                   </button>
@@ -268,14 +296,14 @@
                     required
                     v-if="formstatus === 'confirm'"
                     type="submit"
-                    value="confirm"
-                    class="rounded-xl bg-gray-400 px-3 py-1 max-w-[200px] min-w-[120px] mt-5 text-white borderregister"
+                    value="Confirm"
+                    class="rounded-xl bg-[#1b1b1b] px-3 py-[7px] max-w-[200px] min-w-[120px] mt-5 text-white borderregister"
                   />
 
                   <button
                     v-if="formstatus === 'form'"
                     @click.prevent="CheckInputError()"
-                    class="rounded-xl bg-gray-400 px-3 py-1 max-w-[200px] mt-5 text-white borderregister"
+                    class="bg-gray-400 px-4 py-1 max-w-[200px] mt-5 text-white borderregister"
                   >
                     {{ $t("Register") }}
                   </button>
@@ -289,7 +317,7 @@
           >
             <button
               @click.prevent="setFormStatus('form'), scrollToEnd()"
-              class="rounded-[15px] bg-gray-400 p-1 px-4 max-w-[250px] mt-5 regisbtn text-white"
+              class="rounded-[12px] bg-gray-400 py-2 px-4 max-w-[250px] mt-5 regisbtn text-white"
             >
               {{ $t("Register Bracelet") }}
             </button>
@@ -324,6 +352,7 @@ export default {
     let warrantyDate = ref("")
     let duration = ref("")
     let error404 = ref(false)
+    let modal = ref(false)
     const increst = () => {
       console.log(router.currentRoute.value.params.serialnumber)
     }
@@ -339,9 +368,11 @@ export default {
     }
     const setFormStatus = (_value) => {
       formstatus.value = _value
-      console.log(formstatus.value)
     }
-
+    const setModal = (_value) => {
+      modal.value = _value
+      getItemInfo()
+    }
     const scrollToEnd = () => {
       const element = document.getElementById("registerbtn")
       setTimeout(
@@ -355,7 +386,7 @@ export default {
     }
     const submitForm = (firstName, lastName, email, phoneNo) => {
       axios
-        .post("http://localhost:4000/warranty/register", {
+        .post(`${process.env.VUE_APP_BE_WEB}/warranty/register`, {
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -367,6 +398,7 @@ export default {
           console.log(response)
           if (response.status === 201) {
             setInterval(getItemInfo(), 1500)
+            modal.value = true
           }
         })
         .catch((error) => {
@@ -398,8 +430,8 @@ export default {
       } else if (!Email.value.includes("@") || !Email.value.includes(".")) {
         errormsg.value = "Email is in a wrong format."
       } else {
-        setFormStatus("confirm")
         errormsg.value = ""
+        setFormStatus("confirm")
       }
     }
 
@@ -407,7 +439,7 @@ export default {
     const getItemInfo = () => {
       axios
         .get(
-          `http://localhost:4000/warranty/${router.currentRoute.value.params.serialnumber}`
+          `${process.env.VUE_APP_BE_WEB}/warranty/${router.currentRoute.value.params.serialnumber}`
         )
         .then((response) => {
           console.log(response)
@@ -466,7 +498,9 @@ export default {
       warrantyDate,
       startDate,
       duration,
-      error404
+      error404,
+      modal,
+      setModal
     }
   }
 }
@@ -474,28 +508,29 @@ export default {
 
 <style scope>
 h1 {
-  font-size: 18px !important;
+  font-size: 20px !important;
   font-weight: 700 !important;
 }
 h2 {
-  font-size: 18px !important;
+  font-size: 18 px !important;
   font-weight: 400 !important;
   color: #d9d9d9;
 }
 h3 {
-  font-size: 16px !important;
+  font-size: 18px !important;
   font-weight: 400 !important;
 }
 label {
-  font-size: 15px !important;
+  font-size: 17x !important;
   font-weight: 400 !important;
 }
 .productinfo {
-  font-size: 14px !important;
+  font-size: 16px !important;
   font-weight: 600 !important;
+  color: #525252 !important;
 }
 .confirmtext {
-  font-size: 16px !important;
+  font-size: 18px !important;
   font-weight: 600 !important;
 }
 .info {
@@ -522,21 +557,36 @@ label {
   height: 100%;
 }
 .borderregister {
-  border: 3px solid #ffffff;
+  border: 3px solid #d9d9d9;
   border-radius: 15px;
+  color: #ffffff;
+  font-size: 16px !important;
+  font-weight: 600 !important;
 }
 .regisbtn {
-  border: 3px solid #ffffff;
+  /* border: 1px solid #ffffff; */
   border-radius: 15px;
   font-size: 18px !important;
   font-weight: 600 !important;
 }
-
+.borderback {
+  border-radius: 15px;
+  background: #d9d9d9;
+  color: #a4a4a4;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
 .dots {
   cursor: pointer;
 }
 .wanp {
   font-size: 14px !important;
   font-weight: 400 !important;
+  color: #a4a4a4;
+}
+.modaldiv {
+}
+.blur {
+  filter: blur(5px);
 }
 </style>

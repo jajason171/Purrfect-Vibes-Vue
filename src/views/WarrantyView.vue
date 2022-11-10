@@ -66,7 +66,7 @@
               class=""
               v-else
             >
-              <h1>{{ $t("title") }}</h1>
+              <h1 @click.prevent="increst()">{{ $t("title") }}</h1>
               <p>{{ $t("Register to make it yours") }}</p>
             </div>
 

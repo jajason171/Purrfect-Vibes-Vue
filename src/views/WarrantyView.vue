@@ -1,15 +1,10 @@
 <template>
-  <section v-if="isLoading === true && is404 === true">
-    <p v-if="isLoading === true">isloading</p>
-    <p v-if="is404 === true">isError</p>
-  </section>
   <section
     class="h-[100vh]"
     :class="
       (formstatus === 'register' && 'h-[100vh]') ||
       (formstatus === 'complete' && 'h-[100vh]')
     "
-    v-else
   >
     <div
       v-if="modal === true"
@@ -46,6 +41,21 @@
       :class="modal === true && 'blur'"
     >
       <div class="w-full max-w-[600px] h-full content m-auto">
+        <div
+          class="h-full flex align-middle"
+          v-if="is404 === true"
+        >
+          <img src="../assets/404.svg" />
+        </div>
+        <div
+          class="h-full flex align-middle"
+          v-if="isLoading === true"
+        >
+          <img
+            src="../assets/load.gif"
+            class="h-[50%] mt-[50%]"
+          />
+        </div>
         <div
           v-auto-animate
           class="p-5 h30"
@@ -351,7 +361,6 @@ export default {
     let startDate = ref("")
     let warrantyDate = ref("")
     let duration = ref("")
-    let error404 = ref(false)
     let modal = ref(false)
     const increst = () => {
       console.log(router.currentRoute.value.params.serialnumber)
@@ -442,13 +451,9 @@ export default {
           `${process.env.VUE_APP_BE_WEB}/warranty/${router.currentRoute.value.params.serialnumber}`
         )
         .then((response) => {
-          console.log(response)
           console.log(response.data)
-          console.log(response.data === "Invalid serial number")
-
           if (response.data === "Invalid serial number") {
             is404.value = true
-            console.log(is404.value)
           }
           if (response.data.duration < 0) {
             setFormStatus("register")
@@ -498,7 +503,7 @@ export default {
       warrantyDate,
       startDate,
       duration,
-      error404,
+      is404,
       modal,
       setModal
     }

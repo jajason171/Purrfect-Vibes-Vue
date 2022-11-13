@@ -1,4 +1,12 @@
 <template>
+  <head>
+    <title>Warranty</title>
+    <link
+      rel="icon"
+      href="../assets/logo.svg"
+      type="image/x-icon"
+    />
+  </head>
   <section
     class="h-[100vh]"
     :class="
@@ -350,11 +358,10 @@ export default {
     const router = useRouter()
     let isLoading = ref(true)
     let is404 = ref(false)
-    let FName = ref("jason")
-    let LName = ref("jan")
-    let Email = ref("jasonefw@gmail.com")
-    let PhoneNum = ref("0865412579")
-    const firsttext = ref("hello")
+    let FName = ref("")
+    let LName = ref("")
+    let Email = ref("")
+    let PhoneNum = ref("")
     let secnum = ref(0)
     let formstatus = ref("register")
     let errormsg = ref("")
@@ -362,9 +369,6 @@ export default {
     let warrantyDate = ref("")
     let duration = ref("")
     let modal = ref(false)
-    const increst = () => {
-      console.log(router.currentRoute.value.params.serialnumber)
-    }
     let lang = ref("th")
     const changelang = () => {
       if (lang.value === "en") {
@@ -373,7 +377,6 @@ export default {
         lang.value = "en"
       }
       i18n.global.locale.value = lang.value
-      console.log(i18n.global.locale.value)
     }
     const setFormStatus = (_value) => {
       formstatus.value = _value
@@ -394,6 +397,7 @@ export default {
       // window.scrollTo({ top: 0, behavior: "smooth" })
     }
     const submitForm = (firstName, lastName, email, phoneNo) => {
+      isLoading.value = true
       axios
         .post(`${process.env.VUE_APP_BE_WEB}/warranty/register`, {
           firstName: firstName,
@@ -404,7 +408,6 @@ export default {
           serialNumber: router.currentRoute.value.params.serialnumber
         })
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             setInterval(getItemInfo(), 1500)
             modal.value = true
@@ -413,6 +416,7 @@ export default {
         .catch((error) => {
           this.response = "Error: " + error.response
         })
+      isLoading.value = false
     }
 
     const CheckInputError = () => {
@@ -451,7 +455,6 @@ export default {
           `${process.env.VUE_APP_BE_WEB}/warranty/${router.currentRoute.value.params.serialnumber}`
         )
         .then((response) => {
-          console.log(response.data)
           if (response.data === "Invalid serial number") {
             is404.value = true
           }
@@ -484,9 +487,7 @@ export default {
     getItemInfo()
     return {
       scrollToEnd,
-      firsttext,
       secnum,
-      increst,
       formstatus,
       setFormStatus,
       submitForm,

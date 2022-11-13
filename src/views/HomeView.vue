@@ -1,4 +1,11 @@
 <template>
+  <head>
+    <link
+      rel="icon"
+      href="../assets/logo.svg"
+      type="image/x-icon"
+    />
+  </head>
   <div class="home">
     <img
       alt="Vue logo"
@@ -24,11 +31,8 @@ export default {
   setup() {
     const changelang = () => {
       i18n.global.locale.value = "en"
-      console.log(i18n.global)
     }
-    const checlang = () => {
-      console.log(i18n.global.locale.value)
-    }
+    const checlang = () => {}
 
     return {
       changelang,

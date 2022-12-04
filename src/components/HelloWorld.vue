@@ -18,7 +18,7 @@
           href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
           target="_blank"
           rel="noopener"
-          >babel</a
+          >babel fewfwe</a
         >
       </li>
       <li>

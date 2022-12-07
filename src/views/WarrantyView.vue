@@ -107,7 +107,7 @@
             <!-- src="../assets/bg/{{bg}}.jpg" -->
             <img
               alt="placeloder"
-              :src="'../assets/bg/'+bg+'.jpg'"
+              :src="'../assets/bg/' + bg + '.jpg'"
               class="w-full h-full"
             />
           </div>

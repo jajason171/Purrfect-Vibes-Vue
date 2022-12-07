@@ -374,7 +374,7 @@ export default {
     let modal = ref(false)
     let lang = ref("th")
     let bg = ref("AA")
-    bg.value = router.currentRoute.value.params.serialnumber.slice(3, 5)
+    bg.value = router.currentRoute.value.params.serialnumber.slice(3, 4)
 
     const changelang = () => {
       if (lang.value === "en") {

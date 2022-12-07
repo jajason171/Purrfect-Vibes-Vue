@@ -16,7 +16,7 @@
   >
     <div
       v-if="modal === true"
-      class="rounded-[30px] max-w-[500px] w-[80%] top-[25%] left-[10%] h-[429px] absolute z-10 bg-white p-6 modaldiv"
+      class="rounded-[30px] max-w-[400px] w-[80%] top-[25%] left-[10%] h-[429px] absolute z-10 bg-white p-6 modaldiv"
     >
       <div class="w-[80%] h-[50%] mx-5">
         <img src="../assets/success.gif" />
@@ -104,9 +104,10 @@
             </h3>
           </div>
           <div class="absolute w-full h-[80vh] top-0 left-0 z-[-1]">
+            <!-- src="../assets/bg/{{bg}}.jpg" -->
             <img
               alt="placeloder"
-              src="../assets/1.png"
+              :src="'../assets/bg/'+bg+'.jpg'"
               class="w-full h-full"
             />
           </div>
@@ -370,6 +371,9 @@ export default {
     let duration = ref("")
     let modal = ref(false)
     let lang = ref("th")
+    let bg = ref("AA")
+
+    bg.value = router.currentRoute.value.params.serialnumber.slice(3, 5)
     const changelang = () => {
       if (lang.value === "en") {
         lang.value = "th"
@@ -506,7 +510,8 @@ export default {
       duration,
       is404,
       modal,
-      setModal
+      setModal,
+      bg
     }
   }
 }

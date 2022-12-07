@@ -105,11 +105,13 @@
           </div>
           <div class="absolute w-full h-[80vh] top-0 left-0 z-[-1]">
             <!-- src="../assets/bg/{{bg}}.jpg" -->
+            <!-- :src="'../assets/bg/' + bg + '.jpg'" -->
             <img
               alt="placeloder"
-              :src="'../assets/bg/' + bg + '.jpg'"
+              :src="'/bg/' + bg + '.jpg'"
               class="w-full h-full"
             />
+            <p>{{ bg }}</p>
           </div>
         </div>
         <div
@@ -259,7 +261,7 @@
                       </div>
                       <div class="w50">
                         <p>{{ $t("Price") }}</p>
-                        <p class="productinfo">฿ 1,790.00</p>
+                        <p class="productinfo">฿ 1,390.00</p>
                       </div>
                     </div>
                   </div>
@@ -372,8 +374,8 @@ export default {
     let modal = ref(false)
     let lang = ref("th")
     let bg = ref("AA")
-
     bg.value = router.currentRoute.value.params.serialnumber.slice(3, 5)
+
     const changelang = () => {
       if (lang.value === "en") {
         lang.value = "th"
@@ -422,7 +424,6 @@ export default {
         })
       isLoading.value = false
     }
-
     const CheckInputError = () => {
       if (
         FName.value === "" ||
@@ -451,7 +452,6 @@ export default {
         setFormStatus("confirm")
       }
     }
-
     // eslint-disable-next-line
     const getItemInfo = () => {
       axios
@@ -487,7 +487,6 @@ export default {
         })
       isLoading.value = false
     }
-
     getItemInfo()
     return {
       scrollToEnd,
@@ -523,7 +522,7 @@ h1 {
   font-weight: 700 !important;
 }
 h2 {
-  font-size: 18 px !important;
+  font-size: 18px !important;
   font-weight: 400 !important;
   color: #d9d9d9;
 }
@@ -532,7 +531,7 @@ h3 {
   font-weight: 400 !important;
 }
 label {
-  font-size: 17x !important;
+  font-size: 17px !important;
   font-weight: 400 !important;
 }
 .productinfo {
@@ -595,8 +594,7 @@ label {
   font-weight: 400 !important;
   color: #a4a4a4;
 }
-.modaldiv {
-}
+
 .blur {
   filter: blur(5px);
 }
